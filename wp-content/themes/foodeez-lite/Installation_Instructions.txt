@@ -1,0 +1,69 @@
+/*========= Foodeez Lite =========*/
+
+== Copyright and License ==
+Foodeez Lite WordPress Theme, Copyright (C) 2013 SketchThemes
+Foodeez Lite WordPress theme is licensed under the GPL.
+
+/*========= Installation =========*/
+
+1. Upload the 'foodeez-lite` folder to the `/wp-content/themes/` directory
+Activation and Use
+1. Activate the Theme through the 'Themes' menu in WordPress
+2. See Appearance -> Foodeez Options to change theme options
+3. See Settings -> Reading -> Choose a Page for the Front page and Page for Posts page from drop-down.
+
+   "When you choose a Page for the Front page from drop-down, the contents of Selected page aren't displayed anywhere on the static front page."
+
+   "default your latest posts are show on front page if you are not select any page for front page."
+
+/*========= Theme Features and Documentation =========*/
+
+== WP Version ==
+
+It's requires at least version 3.4 to work properly.Please make sure your WP version is at least 3.4.
+
+
+== Theme Setup ==
+
+*General Settings:*
+1)Upload a logo and a favicon.
+2)Choose Theme Color.
+
+
+*Header Settings:*
+1) Top Bar Contact no.
+2) Reservation Button Link.
+3) Home page Image.
+4) Inner Page Header Background.
+
+
+*Blog Settings :*
+1)  Enter Blog Page Title.
+
+
+* Home Featured Section :*
+1) Add feature box title , content, image and link here.
+
+
+* Home Parallax Section :*
+1) Add Parallax section content here.
+
+
+* Social Links Settings :*
+1) Add Social Profile links here.
+
+
+*Footer :*
+1) Enter Your Copyright Text(You can use HTML for links.)
+
+
+
+Plase install Contact Form 7 plugin and put shortcode in page content to show contact form on contact page.
+
+/*========= Page Templates =========*/
+
+1)Full Width Template
+
+/*========= Translation =========*/
+
+The Foodeez Lite is ready for translation. Translation files are in /languages.

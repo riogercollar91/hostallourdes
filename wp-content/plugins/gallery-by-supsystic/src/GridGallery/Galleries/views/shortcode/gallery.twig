@@ -1,0 +1,150 @@
+{% import '@galleries/shortcode/style.twig' as style %}
+
+{% if gallery is defined and gallery is not empty %}
+
+	{% block gallery_before %}
+		{% if settings.icons is defined and settings.icons.enabled == 'true' %}
+			<style>
+				.{{ settings.icons.effect }} .hi-icon { color: {{ settings.icons.color }} !important; background: {{ settings.icons.background }} !important; }
+				.{{ settings.icons.effect }} .hi-icon:hover { color: {{ settings.icons.hover_color }} !important; background: {{ settings.icons.background_hover }} !important; }
+				.hi-icon { width: {{ settings.icons.size * 2 }}px !important; height: {{ settings.icons.size * 2 }}px !important; }
+				.hi-icon:before { font-size: {{ settings.icons.size|default(16) }}px !important; line-height: {{ settings.icons.size * 2 }}px !important; }
+			</style>
+		{% endif %}
+	{% endblock %}
+
+	<section
+		{% block gallery_attributes %}
+			id="grid-gallery-{{ gallery.id }}"
+			data-grid-type="{{ settings.area.grid }}"
+			data-offset="{{ settings.area.distance }}"
+			data-area-position="{{ settings.area.position }}"
+			{% if settings.area.grid == '2' %}
+			data-width="auto"
+				{% else %}
+					data-width="{{ settings.area.photo_width }}{% if settings.area.photo_width_unit == 1 %}%{% endif %}"
+			{% endif %}
+			data-width="{{ settings.area.photo_width }}{% if settings.area.photo_width_unit == 1 %}%{% endif %}"
+			data-height="{{ settings.area.photo_height }}{% if settings.area.photo_height_unit == 1 %}%{% endif %}"
+			data-padding="{{ settings.area.padding }}"
+			data-quicksand = "{% if settings.quicksand.enabled == '1' %}enabled{% else %}disabled{% endif %}"
+			data-quicksand-duration = "{% if settings.quicksand.duration is not empty %}{{ settings.quicksand.duration }}{% else %}none{% endif %}"
+
+				{% if settings.box.type == '0' and mobile != 'true' %}
+					data-popup-type ="colorbox"
+					data-popup-fadeOut = "{{ settings.box.fadeOut|default(300) }}"
+				{% endif %}
+				{% if settings.box.type == '1' and mobile != 'true' and settings.box.enabled|default('true') == 'true' %}
+					data-popup-type = "pretty-photo"
+				{% endif %}
+				{% if settings.box.type == '2' and mobile != 'true' and settings.box.enabled|default('true') == 'true' %}
+					data-popup-type = "photobox"
+				{% endif %}
+				{% if settings.box.enabled is defined and settings.box.enabled == 'false' %}
+					data-popup-type = "disable"
+				{% endif %}
+				{% if settings.area.grid == '3' %}
+					data-columns-number = {{ settings.general.columns.number }}
+				{% endif %}
+				{% if settings.box.captions == 'on' %}
+					data-popup-captions = 'hide'
+				{% endif %}
+			data-popup-slideshow = "{{ settings.box.slideshow }}"
+			data-popup-slideshow-speed = "{{ settings.box.slideshowSpeed|default(2500) }}"
+			data-popup-slideshow-auto = "{{ settings.box.slideshowAuto|default('true') }}"
+			data-popup-background = "{{ settings.box.background }}"
+			data-fullscreen="{{ settings.fullscreen.enabled }}"
+			data-hide-tooltip="{{ settings.thumbnail.tooltip }}"
+			data-caption-font-family="{{ settings.thumbnail.overlay.font_family }}"
+			{% if settings.thumbnail.overlay.effect == 'polaroid' %}
+				data-polaroid-animation="{{ settings.thumbnail.overlay.polaroidAnimation  | default('true') }}"
+				data-polaroid-scattering="{{ settings.thumbnail.overlay.polaroidScattering | default('true') }}"
+			{% endif %}
+			{% if settings.area.grid == '3' %}
+				data-responsive-colums="{{ settings.general.responsiveColumns|default("")|json_encode }}"
+			{% endif %}
+			data-caption-font-family="{{ settings.thumbnail.overlay.font_family }}"
+			class="grid-gallery
+				{% if settings.area.grid == '1' %}
+					grid-gallery-fluid-height
+				{% else %}
+					grid-gallery-fixed
+				{% endif %}
+
+				{% if settings.thumbs.enable == '1' %}
+					grid-gallery-thumbs
+				{% endif %}
+
+				{% if environment.getConfig().get('optimizations') == 1 and environment.isPro() == false %}
+						optimizations
+				{% endif %}"
+			style="
+				width:{{ settings.area.width ~ settings.area.width_unit|replace(['px', '%']) }};
+				height:{{ settings.area.height | default('auto') }}
+					{% if settings.area.height != 'auto' %}px;
+					{% endif %};
+				{% if settings.area.position == '1' or settings.area.position == 'left'  %}
+					float: left
+				{% endif %}
+				{% if settings.area.position == '2' or settings.area.position == 'right' %}
+					float:right
+				{% endif %}
+				{% if  settings.area.position == 'center' %}
+				margin-left:auto;
+				margin-right:auto;
+				{% endif %}
+			{% if settings.fullscreen.enabled %}position: fixed; z-index: 9999999; top: 0; left: 0; background-color: white;{% else %}position:relative;{% endif %}"
+		{% endblock %}>
+		<div class="gallery-loading">
+			<div class="blocks">
+				<div class="block"></div>
+				<div class="block"></div>
+				<div class="block"></div>
+				<div class="block"></div>
+			</div>
+		</div>
+
+		{% block photos_before %}
+		{% endblock %}
+		<section 
+			{% block photos_attributes %}               
+				id="photos-{{ gallery.id }}" 
+				class="grid-gallery-photos" 
+			{% endblock %}>
+
+			{% block photos %}
+				{% for photo in gallery.photos %}
+					{% include '@galleries/shortcode/helpers.twig' with {'photo': photo, 'settings': settings} only %}
+				{% endfor %}
+			{% endblock %}
+
+			<div class="grid-gallery-clearfix"></div>
+		</section>
+		<div class="grid-gallery-clearfix"></div>
+
+		{% block photos_after %}
+		{% endblock %}
+
+	</section>
+	
+	<style>
+		#cboxLoadedContent iframe { margin: 0; padding: 0;}
+	</style>
+	<!-- Gallery by Supsystic plugin -->
+	<script type="text/javascript">
+
+		window.galleryLoaded = (function() {
+			{% if settings.box.theme != 'theme_6' and settings.box.theme != 'theme_7' %}
+				jQuery('head').append('<link rel="stylesheet" type="text/css" href="{{ colorbox }}/jquery-colorbox/themes/{{ settings.box.theme|default("theme_1") }}/colorbox.css">');
+			{% else %}
+				jQuery('head').append('<link rel="stylesheet" type="text/css" href="{{ colorbox }}/jquery-colorbox/themes/theme_1/colorbox.css">');
+			{% endif %}
+		});
+
+		jQuery(document).ready(function($) {
+			galleryLoaded();
+		}).ajaxComplete(function() {
+			galleryLoaded();
+		});
+	</script>
+{% endif %}
